@@ -7,3 +7,77 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.background {
+  width: 100vw;
+  position: relative;
+}
+
+.bg-top {
+  height: 150px;
+  background-color: #009688;
+}
+
+.bg-bottom {
+  height: calc(100vh - 150px);
+  background-color: #d8dbd7;
+}
+
+.app-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: calc(100vh - 80px);
+  width: calc(100vw - 300px);
+}
+
+.sidebar {
+  height: 100%;
+  width: 30%;
+}
+
+.main {
+  height: 100%;
+  width: 70%;
+}
+
+.app-container {
+  background-color: white;
+}
+
+.side-bar-item, .main-item {
+  border: 1px solid #f5efed;
+}
+
+.message-container {
+  background-image: url(../img/mine.jpg);
+}
+
+.hover {
+  color: #afacab;
+}
+
+.hoverb {
+  color: #8edafc;
+}
+
+.hover:hover, .hoverb:hover {
+  opacity: .5;
+}
+
+.sent{
+  justify-content: flex-end;
+}
+
+.received {
+  justify-content: flex-start;
+}
+
+.sent .message {
+  background-color: #dcf8c6;
+}
+
+.received .message {
+  background-color: white;
+}

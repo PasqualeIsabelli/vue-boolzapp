@@ -28,7 +28,7 @@ permette di cancellare il messaggio selezionato
 const app = Vue.createApp({
   data() {
     return {
-      contacts = [
+      contacts: [
         {
           name: "Michele",
           avatar: "_1",
