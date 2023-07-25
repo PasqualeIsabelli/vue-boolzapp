@@ -109,9 +109,46 @@ const app = Vue.createApp({
           ],
         },
       ],
+      // Imposto una variabile con valore null per il contatto corrente
+      currentContact: null,
+      // Creo un oggetto universale per stampare i nuovi messaggi inviati e ricevuti
+      newMessage: {
+        date: "",
+        message: "",
+        status: ""
+      },
     }
   },
   methods: {
+    // CLICK EVENT: Al click sul contatto compare il nome di quel contatto nella parte destra dell'app con relativa chat
+    onContactClick(contact) {
+      this.currentContact = contact
+    },
+    // FUNZIONE: Aggiungo un nuovo messaggio alla chat tramite input
+    addNewMessage() {
+      // Clone messaggio inviato
+      const newMessage = {...this.newMessage}
+      // Imposto lo status su received
+      newMessage.status = "sent"
+      // Pusho la risposta all'interno dell'oggetto currentContact
+      this.currentContact.messages.push(newMessage);
 
+      setTimeout(this.addAnswer, 1000);
+    },
+    // FUNZIONE: Aggiungo una risposta al messaggio aggiunto in chat tramite input
+    addAnswer() {
+      // Clone messaggio ricevuto
+      const newMessage = {...this.newMessage}
+      // Imposto lo status su received
+      newMessage.status = "received"
+      // Imposto la stringa "ok" come risposta
+      newMessage.message = "ok"
+      // Pusho la risposta all'interno dell'oggetto currentContact
+      this.currentContact.messages.push(newMessage);
+    }
+  },
+  beforeMount() {
+    // Con il beforeMount, all'avvio dell'app compare il primo contatto della lista
+    this.currentContact = this.contacts[0]
   }
 }).mount('#app')

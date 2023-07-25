@@ -16,8 +16,10 @@
         <div class="bg-top"></div>
         <div class="bg-bottom"></div>
         <div class="app-container d-flex">
+          <!--PARTE SINISTRA-->
           <div class="sidebar d-flex flex-column">
-            <div class="side-bar-item user d-flex p-2 overflow-hidden">
+            <!--DIV USER-->
+            <div class="side-bar-item user d-flex p-2 flex-shrink-0 overflow-hidden">
               <div class="user-image rounded-circle" style="width: 60px; height: 60px;">
                 <img style="width: 100%; border-radius: 50%;" src="img/avatar_8.jpg">
               </div>
@@ -30,7 +32,8 @@
                 <a class="hover" href="#"><i class="fa-solid fa-ellipsis-vertical" style="color: #afacab;"></i></a>
               </div>
             </div>
-            <div class="side-bar-item notification d-flex p-3 fs-4 overflow-hidden" style="background-color: #8edafc;">
+            <!--DIV NOTIFICHE-->
+            <div class="side-bar-item notification flex-shrink-0 d-flex p-3 fs-4 overflow-hidden" style="background-color: #8edafc;">
               <div class="rounded-circle pt-2 text-center" style="width: 60px; height: 60px; background-color: white;">
                 <a class="hoverb" href="#"><i class="fa-solid fa-bell-slash" style="color: #8edafc;"></i></a>
               </div>
@@ -39,15 +42,16 @@
                 <div style="height: 20px;" class="fs-6"><a class="text-secondary" href="#">Attiva notifiche desktop</a></div>
               </div>
             </div>
-            <div class="side-bar-item search-bar p-2 overflow-hidden">
+            <!--DIV SEARCH BAR-->
+            <div class="side-bar-item search-bar flex-shrink-0 p-2 overflow-hidden">
               <div class="input-group mt-1">
-                <span class="input-group-text"><a href="#"><i class="fa-solid fa-magnifying-glass" style="color: #afacab;"></i></a></span>
+                <button class="btn btn-outline-white border"><i class="fa-solid fa-magnifying-glass" style="color: #afacab;"></i></button>
                 <input type="text" class="form-control" placeholder="Cerca o inizia una nuova chat" aria-label="" aria-describedby="basic-addon1">
               </div>
             </div>
+            <!--DIV CONTATTI-->
             <div class="side-bar-item contacts p-2 flex-grow-1 overflow-auto">
-              <!--MODIFICARE-->
-              <div class="contact p-2 d-flex lh-1" v-for="contact in contacts">
+              <div class="contact p-2 d-flex lh-1" v-for="contact in contacts" @click="onContactClick(contact)">
                 <div class="contact-image rounded-circle" style="width: 60px; height: 60px;">
                   <img style="width: 100%; border-radius: 50%;" :src="`img/avatar${contact.avatar}.jpg`">
                 </div>
@@ -57,53 +61,45 @@
                 </div>
                 <div class="text-secondary" style="font-size: 13px;">12:00</div>
               </div>
-            <!--FINO A QUI-->
             </div>
           </div>
+          <!--PARTE DESTRA-->
           <div class="main d-flex flex-column">
-            <div class="main-item contact-info p-2 d-flex overflow-hidden">
-              <!--MODIFICARE AL CLICK-->
-              <div class="contact-image rounded-circle" style="width: 60px; height: 60px;">
-                <img style="width: 100%; border-radius: 50%;" src="img/avatar_1.jpg">
+            <!--DIV CONTATTO-->
+            <div class="main-item contact-info flex-shrink-0 p-2 d-flex overflow-hidden">
+              <div class="d-flex flex-grow-1" style="min-height: 60px;">
+                <div class="contact-image rounded-circle" style="width: 60px; height: 60px;">
+                  <img style="width: 100%; border-radius: 50%;" :src="`img/avatar${currentContact.avatar}.jpg`">
+                </div>
+                <div class="ms-2 flex-grow-1">
+                  <div style="height: 20px;" class="fs-5 fw-bold">{{currentContact.name}}</div>
+                  <div style="height: 20px; font-size: 13px;" class="mt-2 text-secondary">Ultimo accesso oggi alle 12:00</div>
+                </div>
               </div>
-              <div class="ms-2 flex-grow-1">
-                <div style="height: 20px;" class="fs-5 fw-bold">Michele</div>
-                <div style="height: 20px; font-size: 13px;" class="mt-2 text-secondary">Ultimo accesso oggi alle 12:00</div>
-              </div>
-              <!--FINO A QUI-->
               <div class="d-flex fs-4 gap-3 pt-2 me-2">
                 <a class="hover" href="#"><i class="fa-solid fa-magnifying-glass" style="color: #afacab;"></i></a>
                 <a class="hover" href="#"><i class="fa-solid fa-paperclip" style="color: #afacab;"></i></a>
                 <a class="hover" href="#"><i class="fa-solid fa-ellipsis-vertical" style="color: #afacab;"></i></a>
               </div>
             </div>
-            <!--MODIFICARE-->
+            <!--DIV CHAT-->
             <div class="message-container flex-grow-1 overflow-auto p-5">
-              <div class="col box-message d-flex mt-2 sent">
-                <div style="width: 300px;" class="message rounded-3 p-2">
-                  Hai portato a spasso il cane?
-                  <div style="font-size: 13px;" class="d-flex justify-content-end text-secondary">15:30</div>
-                </div>
-              </div>
-              <div class="col box-message d-flex mt-2 sent">
-                <div style="width: 300px;" class="message rounded-3 p-2">
-                  Ricordati di stendere i panni
-                  <div style="font-size: 13px;" class="d-flex justify-content-end text-secondary">15:30</div></div>
-              </div>
-              <div class="col box-message d-flex mt-2 received">
-                <div style="width: 300px;" class="message rounded-3 p-2">
-                  Tutto fatto!
-                  <div style="font-size: 13px;" class="d-flex justify-content-end text-secondary">16:15</div>
+              <!--Creo una variabile currentMessage dove ciclo tutti i messaggi dei vari contatti-->
+              <div class="single-message-container d-flex mt-2" v-for="currentMessage in currentContact.messages">
+                <!-- Imposto la condizione se lo status del currentMessage è uguale a sent lascia sent altrimenti cambia in received cosi da dividere i messaggi inviati da quelli ricevuti-->
+                <div class="message rounded-3 p-2" :class="currentMessage.status === 'sent' ? 'sent' : 'received' ">
+                  {{currentMessage.message}}
+                  <div style="font-size: 13px;" class="d-flex justify-content-end text-secondary">{{currentMessage.date}}</div>
                 </div>
               </div>
             </div>
-            <!--FINO A QUI-->
-            <div class="main-item chat-bar d-flex overflow-hidden">
+            <!--DIV CHAT-BAR-->
+            <div class="main-item chat-bar flex-shrink-0 d-flex overflow-hidden">
               <div class="col-1 text-center">
                 <a class="hover" href="#"><i class="fa-regular fa-smile fs-4 pt-3" style="color: #afacab;"></i></a>
               </div>
               <div class="col-10 p-2">
-                <input type="text" class="form-control" placeholder="Scrivi un messaggio">
+                <input type="text" class="form-control" placeholder="Scrivi un messaggio" v-model="newMessage.message" @keyup.enter="addNewMessage()">
               </div>
               <div class="col-1 text-center">
                 <a class="hover" href="#"><i class="fa-solid fa-microphone fs-4 pt-3" style="color: #afacab;"></i></a>

@@ -66,18 +66,16 @@ body {
   opacity: .5;
 }
 
-.sent{
-  justify-content: flex-end;
+.message {
+  min-width: 300px;
+  display: inline-block;
 }
 
-.received {
-  justify-content: flex-start;
-}
-
-.sent .message {
+.message.sent{
+  margin-left: auto;
   background-color: #dcf8c6;
 }
 
-.received .message {
+.message.received {
   background-color: white;
 }
