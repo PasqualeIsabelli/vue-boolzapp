@@ -46,20 +46,21 @@
             <div class="side-bar-item search-bar flex-shrink-0 p-2 overflow-hidden">
               <div class="input-group mt-1">
                 <button class="btn btn-outline-white border"><i class="fa-solid fa-magnifying-glass" style="color: #afacab;"></i></button>
-                <input type="text" class="form-control" placeholder="Cerca o inizia una nuova chat" aria-label="" aria-describedby="basic-addon1">
+                <input type="text" class="form-control" placeholder="Cerca o inizia una nuova chat" v-model="filterInput">
               </div>
             </div>
             <!--DIV CONTATTI-->
             <div class="side-bar-item contacts p-2 flex-grow-1 overflow-auto">
-              <div class="contact p-2 d-flex lh-1" v-for="contact in contacts" @click="onContactClick(contact)">
-                <div class="contact-image rounded-circle" style="width: 60px; height: 60px;">
-                  <img style="width: 100%; border-radius: 50%;" :src="`img/avatar${contact.avatar}.jpg`">
+              <div v-for="contact in contacts">
+                <div class="contact p-2 d-flex lh-1" @click="onContactClick(contact)" v-if="contact.name.toLowerCase().includes(filterInput.toLowerCase())">
+                  <div class="contact-image rounded-circle" style="width: 60px; height: 60px;">
+                    <img style="width: 100%; border-radius: 50%;" :src="`img/avatar${contact.avatar}.jpg`">
+                  </div>
+                  <div class="ms-2 flex-grow-1">
+                    <div style="height: 20px;" class="fs-5 fw-bold">{{contact.name}}</div>
+                    <div style="height: 20px; font-size: 13px;" class="text-secondary mt-2">Ultimo messaggio inviato alle __:__</div>
+                  </div>
                 </div>
-                <div class="ms-2 flex-grow-1">
-                  <div style="height: 20px;" class="fs-5 fw-bold">{{contact.name}}</div>
-                  <div style="height: 20px; font-size: 13px;" class="text-secondary mt-2">Ultimo messaggio inviato</div>
-                </div>
-                <div class="text-secondary" style="font-size: 13px;">12:00</div>
               </div>
             </div>
           </div>
@@ -84,11 +85,20 @@
             </div>
             <!--DIV CHAT-->
             <div class="message-container flex-grow-1 overflow-auto p-5">
-              <!--Creo una variabile currentMessage dove ciclo tutti i messaggi dei vari contatti-->
-              <div class="single-message-container d-flex mt-2" v-for="currentMessage in currentContact.messages">
-                <!-- Imposto la condizione se lo status del currentMessage è uguale a sent lascia sent altrimenti cambia in received cosi da dividere i messaggi inviati da quelli ricevuti-->
-                <div class="message rounded-3 p-2" :class="currentMessage.status === 'sent' ? 'sent' : 'received' ">
-                  {{currentMessage.message}}
+              <div class="single-message-container d-flex mt-2" v-for="(currentMessage, i) in currentContact.messages">
+                <div class="message rounded-3 p-2" :class="currentMessage.status === 'sent' ? 'sent' : 'received'">
+                  <div class="d-flex justify-content-between">
+                    {{currentMessage.message}}
+                    <div class="dropdown">
+                      <button class="btn btn-link hide-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-chevron-down" style="color: #afacab;"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Message info</a></li>
+                        <li><a class="dropdown-item" href="#" @click="deleteMessage(i)">Delete message</a></li>
+                      </ul>
+                    </div>
+                  </div>
                   <div style="font-size: 13px;" class="d-flex justify-content-end text-secondary">{{currentMessage.date}}</div>
                 </div>
               </div>

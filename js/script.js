@@ -67,7 +67,7 @@ const app = Vue.createApp({
             {
               date: "20/03/2020 16:35:00",
               message: "Mi piacerebbe ma devo andare a fare la spesa.",
-              status: "received",
+              status: "sent",
             },
           ],
         },
@@ -117,6 +117,8 @@ const app = Vue.createApp({
         message: "",
         status: ""
       },
+      // Creo una variabile universale filterInput per la ricerca tramite search-bar
+      filterInput: "",
     }
   },
   methods: {
@@ -126,25 +128,35 @@ const app = Vue.createApp({
     },
     // FUNZIONE: Aggiungo un nuovo messaggio alla chat tramite input
     addNewMessage() {
-      // Clone messaggio inviato
+      // Clone messaggio inviato per eliminare la reattività tramite spread operator
       const newMessage = {...this.newMessage}
       // Imposto lo status su received
       newMessage.status = "sent"
+      // Aggiungo la data e l'ora di invio del nuovo messaggio
+      newMessage.date = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
       // Pusho la risposta all'interno dell'oggetto currentContact
-      this.currentContact.messages.push(newMessage);
-
+      this.currentContact.messages.push(newMessage)
+      // Imposto una setTimeout per la risposta dopo 1 secondo
       setTimeout(this.addAnswer, 1000);
     },
     // FUNZIONE: Aggiungo una risposta al messaggio aggiunto in chat tramite input
     addAnswer() {
-      // Clone messaggio ricevuto
+      // Clone messaggio ricevuto per eliminare la reattività tramite spread operator
       const newMessage = {...this.newMessage}
       // Imposto lo status su received
       newMessage.status = "received"
+      // Aggiungo la data e l'ora di invio della risposta al nuovo messaggio
+      newMessage.date = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
       // Imposto la stringa "ok" come risposta
-      newMessage.message = "ok"
+      newMessage.message = "Ok"
       // Pusho la risposta all'interno dell'oggetto currentContact
       this.currentContact.messages.push(newMessage);
+    },
+    deleteMessage(i) {
+      // Imposto una variabile che va ad individuare l'indice del contatto della chat
+      let indexNewMessage = this.contacts.indexOf(this.currentContact);
+      // Rimuovo tramite splice il messaggio che seleziono
+      this.contacts[indexNewMessage].messages.splice(i, 1)
     }
   },
   beforeMount() {

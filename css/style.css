@@ -50,6 +50,10 @@ body {
   border: 1px solid #f5efed;
 }
 
+.contact:hover {
+  background-color: #e4e2e1;
+}
+
 .message-container {
   background-image: url(../img/mine.jpg);
 }
@@ -78,4 +82,13 @@ body {
 
 .message.received {
   background-color: white;
+}
+
+.dropdown .hide-btn {
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.dropdown:hover .hide-btn {
+  opacity: 1;
 }
